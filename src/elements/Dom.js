@@ -162,6 +162,7 @@ export default class Dom extends EventTarget {
 
   // Basically does the same as `add()` but returns the added element instead
   put (element, i) {
+    element = makeInstance(element)
     this.add(element, i)
     return element
   }
@@ -194,22 +195,15 @@ export default class Dom extends EventTarget {
     return element
   }
 
-  round (precision = 2, map) {
+  round (precision = 2, map = null) {
     const factor = 10 ** precision
-    const attrs = this.attr()
+    const attrs = this.attr(map)
 
-    // If we have no map, build one from attrs
-    if (!map) {
-      map = Object.keys(attrs)
+    for (const i in attrs) {
+      attrs[i] = Math.round(attrs[i] * factor) / factor
     }
 
-    // Holds rounded attributes
-    const newAttrs = {}
-    map.forEach((key) => {
-      newAttrs[key] = Math.round(attrs[key] * factor) / factor
-    })
-
-    this.attr(newAttrs)
+    this.attr(attrs)
     return this
   }
 
@@ -300,6 +294,17 @@ export default class Dom extends EventTarget {
     // This is faster than removing all children and adding a new one
     this.node.textContent = text
     return this
+  }
+
+  wrap (node) {
+    const parent = this.parent()
+
+    if (!parent) {
+      return this.addTo(node)
+    }
+
+    const position = parent.index(this)
+    return parent.put(node, position).put(this)
   }
 
   // write svgjs data to the dom

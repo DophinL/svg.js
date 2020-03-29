@@ -14,7 +14,7 @@ export function create (name) {
 }
 
 // 高级版的adopt，会处理字符串等
-export function makeInstance (element) {
+export function makeInstance (element, isHTML = false) {
   if (element instanceof Base) return element
 
   if (typeof element === 'object') {
@@ -29,13 +29,16 @@ export function makeInstance (element) {
     return adopter(globals.document.querySelector(element))
   }
 
-  var node = create('svg')
-  node.innerHTML = element
+  // Make sure, that HTML elements are created with the correct namespace
+  var wrapper = isHTML ? globals.document.createElement('div') : create('svg')
+  wrapper.innerHTML = element
 
   // We can use firstChild here because we know,
   // that the first char is < and thus an element
-  element = adopter(node.firstChild)
+  element = adopter(wrapper.firstChild)
 
+  // make sure, that element doesnt have its wrapper attached
+  wrapper.removeChild(wrapper.firstChild)
   return element
 }
 
