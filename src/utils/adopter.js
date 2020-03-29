@@ -13,6 +13,7 @@ export function create (name) {
   return globals.document.createElementNS(ns, name)
 }
 
+// 高级版的adopt，会处理字符串等
 export function makeInstance (element) {
   if (element instanceof Base) return element
 
@@ -43,6 +44,7 @@ export function nodeOrNew (name, node) {
 }
 
 // Adopt existing svg elements
+// 用于把原生node转变为svg.js节点
 export function adopt (node) {
   // check for presence of node
   if (!node) return null

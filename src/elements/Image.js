@@ -48,6 +48,7 @@ export default class Image extends Shape {
   }
 }
 
+// 当调用attr时，会触发此hook
 registerAttrHook(function (attr, val, _this) {
   // convert image fill and stroke to patterns
   if (attr === 'fill' || attr === 'stroke') {

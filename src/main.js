@@ -155,6 +155,7 @@ extend(Dom, getMethodsFor('Dom'))
 extend(Element, getMethodsFor('Element'))
 extend(Shape, getMethodsFor('Shape'))
 // extend(Element, getConstructor('Memory'))
+// 比如container.rect等方法，就是通过这个来实现的
 extend(Container, getMethodsFor('Container'))
 
 extend(Runner, getMethodsFor('Runner'))
